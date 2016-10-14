@@ -1,4 +1,5 @@
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 
 /**
@@ -6,7 +7,7 @@ import rx.Subscriber;
  */
 public class Main {
 
-    Observable myObservable = Observable.create(new Observable.OnSubscribe<String>() {
+    private Observable myObservable = Observable.create(new Observable.OnSubscribe<String>() {
         @Override
         public void call(Subscriber<? super String> subscriber) {
             subscriber.onNext("Hello World -- RX 1");
@@ -17,7 +18,25 @@ public class Main {
         }
     });
 
-    Subscriber mySubscriber = new Subscriber<String>() {
+    private Observer myObserver = new Observer<String>() {
+        @Override
+        public void onCompleted() {
+            System.out.println("myObserver -- completed" + "   ~~~ From Observer callback");
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            System.out.println("Fishy...!!" + "   ~~~ From Observer callback");
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onNext(String o) {
+            System.out.println(o + "   ~~~ From Observer callback");
+        }
+    };
+
+    private Subscriber mySubscriber = new Subscriber<String>() {
         @Override
         public void onCompleted() {
             System.out.println("mySubscriber -- completed");
@@ -41,5 +60,6 @@ public class Main {
         Main m = new Main();
 
         m.myObservable.subscribe(m.mySubscriber);
+        m.myObservable.subscribe(m.myObserver);
     }
 }
