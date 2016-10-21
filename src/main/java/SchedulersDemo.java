@@ -13,13 +13,16 @@ public class SchedulersDemo {
         //noinspection unchecked
         Observable length = source
                 .map(new Func1<String, Integer>() {
-            @Override
-            public Integer call(String s) {
-                return s.length();
-            }
-        }).subscribeOn(Schedulers.computation());
+                    @Override
+                    public Integer call(String s) {
+                        System.out.println("The current thread is : " + Thread.currentThread().getName());
+                        return s.length();
+                    }
+                })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.newThread());
 
-        length.subscribe(o -> System.out.println("Length is : "+o + " " + Thread.currentThread().getName()));
+        length.subscribe(o -> System.out.println("Length is : " + o + " " + Thread.currentThread().getName()));
 
         try {
             Thread.sleep(2000);
