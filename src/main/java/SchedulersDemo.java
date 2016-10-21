@@ -12,15 +12,14 @@ public class SchedulersDemo {
         Observable source = Observable.just("Hello", "Animals", "Mama");
         //noinspection unchecked
         Observable length = source
-                .subscribeOn(Schedulers.computation())
                 .map(new Func1<String, Integer>() {
             @Override
             public Integer call(String s) {
                 return s.length();
             }
-        });
+        }).subscribeOn(Schedulers.computation());
 
-        length.subscribe(o -> System.out.println("Length is : "+o));
+        length.subscribe(o -> System.out.println("Length is : "+o + " " + Thread.currentThread().getName()));
 
         try {
             Thread.sleep(2000);
