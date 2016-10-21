@@ -16,22 +16,6 @@ public class SchedulersDemo {
             }
         });
 
-        length.subscribe(new Subscriber() {
-            @Override
-            public void onCompleted() {
-                System.out.println("Complete");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                System.out.println("Error");
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onNext(Object o) {
-                System.out.println("Length is "+ o);
-            }
-        });
+        length.subscribe(o -> System.out.println("Length is : "+o));
     }
 }
