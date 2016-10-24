@@ -28,7 +28,16 @@ public class SchedulersDemo {
                         System.out.println("We are currently on " + Thread.currentThread().getName());
                         return s;
                     }
-                });
+                })
+                .observeOn(Schedulers.newThread())
+                .map(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer integer) {
+                        System.out.println("Now we are on " + Thread.currentThread().getName());
+                        return integer;
+                    }
+                })
+                ;
 
         length.subscribe(o -> System.out.println("Length is : " + o + " " + Thread.currentThread().getName()));
 
